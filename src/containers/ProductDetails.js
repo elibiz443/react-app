@@ -9,7 +9,7 @@ import {
 const ProductDetails = () => {
   const { productId } = useParams();
   let product = useSelector((state) => state.product);
-  const { image, title, price, category, description } = product;
+  const { image, name, price, category_id, description, quantity } = product;
   const dispatch = useDispatch();
   const fetchProductDetail = async (id) => {
     const response = await axios
@@ -39,11 +39,11 @@ const ProductDetails = () => {
                 <img className="ui fluid image" src={image} alt="" />
               </div>
               <div className="column rp">
-                <h1>{title}</h1>
+                <h1>{name}</h1>
                 <h2>
                   <button className="ui teal tag label">${price}</button>
                 </h2>
-                <h3 className="ui brown block header">{category}</h3>
+                <h3 className="ui brown block header">Quantity: {quantity}</h3>
                 <p>{description}</p>
                 <div className="ui vertical animated button" tabIndex="0">
                   <div className="hidden content">
