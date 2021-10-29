@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../redux/actions/productsActions";
 import ProductComponent from "./ProductComponent";
@@ -8,9 +9,10 @@ const ProductPage = () => {
   const products = useSelector((state) => state.allProducts.products);
   const dispatch = useDispatch();
 
-  const fetchProducts = async () => {
+  const { CategoryId } = useParams();
+  const fetchProducts = async (id) => {
     const response = await axios
-      .get("http://localhost:3001/api/v1/products")
+      .get(`http://localhost:3001/api/v1/products?search[category_id]=${id}`)
       .catch((err) => {
         console.log("Err: ", err);
       });
@@ -18,7 +20,7 @@ const ProductPage = () => {
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(CategoryId);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   console.log("Products :", products);

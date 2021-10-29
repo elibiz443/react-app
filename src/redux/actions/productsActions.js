@@ -7,6 +7,13 @@ export const setProducts = (products) => {
   };
 };
 
+export const setCategories = (categories) => {
+  return {
+    type: ActionTypes.SET_CATEGORIES,
+    payload: categories,
+  };
+};
+
 export const selectedProduct = (product) => {
   return {
     type: ActionTypes.SELECTED_PRODUCT,

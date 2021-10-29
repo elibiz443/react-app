@@ -9,7 +9,7 @@ import {
 const ProductDetails = () => {
   const { productId } = useParams();
   let product = useSelector((state) => state.product);
-  const { image, name, price, category_id, description, quantity } = product;
+  const { image, name, price, description, quantity, id } = product;
   const dispatch = useDispatch();
   const fetchProductDetail = async (id) => {
     const response = await axios
@@ -17,7 +17,19 @@ const ProductDetails = () => {
       .catch((err) => {
         console.log("Err: ", err);
       });
-    dispatch(selectedProduct(response.data));
+    dispatch(selectedProduct(response.data)); 
+  };
+
+  const buyProductDetail = async (id) => {
+    let old_qty=quantity;
+    let qty=old_qty-1;
+    const datas = { quantity:  qty};
+    const response = await axios
+      .put(`http://localhost:3001/api/v1/products/${id}`, datas)
+      .catch((err) => {
+        console.log("Err: ", err);
+      });
+    dispatch(selectedProduct(response.data)); 
   };
 
   useEffect(() => {
@@ -43,14 +55,18 @@ const ProductDetails = () => {
                 <h2>
                   <button className="ui teal tag label">${price}</button>
                 </h2>
-                <h3 className="ui brown block header">Quantity: {quantity}</h3>
+                <h3 className="ui brown block ">Quantity: {quantity}</h3>
                 <p>{description}</p>
-                <div className="ui vertical animated button" tabIndex="0">
+                {quantity > 0 ? (
+                  <div className="ui vertical teal animated button" tabIndex="0" onClick={() => buyProductDetail(id)}>
                   <div className="hidden content">
                     <i className="shop icon"></i>
                   </div>
-                  <div className="visible content">Add to Cart</div>
+                  <div className="visible content">Buy</div>
                 </div>
+                ) : (
+                  <h3 className="ui red header">Product out of stock</h3>
+                )}
               </div>
             </div>
           </div>
